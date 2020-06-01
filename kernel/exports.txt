@@ -52,6 +52,9 @@ strlen
 
 # Misc
 abs
+strtok_r
+mktime
+towlower
 # __error
 
 ######################################
