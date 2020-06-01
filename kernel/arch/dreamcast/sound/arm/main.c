@@ -127,6 +127,10 @@ uint32 process_one(uint32 tail) {
             /* Reset our timer clock to zero */
             timer = 0;
             break;
+        case AICA_CMD_MIDI:
+	    while ((SNDREG32(0x2808) & 0x1000) == 0x1000);
+	    SNDREG32(0x280C) = ((uint32 *)pkt->cmd_data)[0] & 0x000000FF;
+            break;
         default:
             /* error */
             break;

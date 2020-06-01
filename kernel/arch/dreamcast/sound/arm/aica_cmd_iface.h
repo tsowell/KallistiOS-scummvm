@@ -67,11 +67,18 @@ typedef struct aica_channel {
     aica_channel_t  * CHANR = (aica_channel_t *)(CMDR->cmd_data);
 #define AICA_CMDSTR_CHANNEL_SIZE    ((sizeof(aica_cmd_t) + sizeof(aica_channel_t))/4)
 
+#define AICA_CMDSTR_MIDI(T, CMDR, MIDIR) \
+    uint8   T[sizeof(aica_cmd_t) + sizeof(uint32)]; \
+    aica_cmd_t  * CMDR = (aica_cmd_t *)T; \
+    uint32 * MIDIR = (uint32 *)(CMDR->cmd_data);
+#define AICA_CMDSTR_MIDI_SIZE     ((sizeof(aica_cmd_t) + sizeof(uint32))/4)
+
 /* Command values (for aica_cmd_t) */
 #define AICA_CMD_NONE       0x00000000  /* No command (dummy packet)    */
 #define AICA_CMD_PING       0x00000001  /* Check for signs of life  */
 #define AICA_CMD_CHAN       0x00000002  /* Perform a wavetable action   */
 #define AICA_CMD_SYNC_CLOCK 0x00000003  /* Reset the millisecond clock  */
+#define AICA_CMD_MIDI       0x00000004
 
 /* Response values (for aica_cmd_t) */
 #define AICA_RESP_NONE      0x00000000
