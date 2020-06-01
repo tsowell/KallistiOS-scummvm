@@ -373,6 +373,7 @@ retry_fat32:
 
                     fs->sb.last_alloc_cluster = i;
                     --fs->sb.free_clusters;
+		    fs->flags |= FAT_FS_FLAG_SB_DIRTY;
                     return i;
                 }
 
@@ -424,6 +425,7 @@ retry_fat16:
                     fat_fatblock_mark_dirty(fs, sn);
 
                     fs->sb.last_alloc_cluster = i;
+		    fs->flags |= FAT_FS_FLAG_SB_DIRTY;
                     return i;
                 }
 
@@ -461,6 +463,7 @@ retry_fat16:
                         return FAT_INVALID_CLUSTER;
 
                     fs->sb.last_alloc_cluster = i;
+		    fs->flags |= FAT_FS_FLAG_SB_DIRTY;
                 }
                 else if(cl == FAT_INVALID_CLUSTER) {
                     return cl;
@@ -474,6 +477,7 @@ retry_fat16:
                         return FAT_INVALID_CLUSTER;
 
                     fs->sb.last_alloc_cluster = i;
+		    fs->flags |= FAT_FS_FLAG_SB_DIRTY;
                 }
                 else if(cl == FAT_INVALID_CLUSTER) {
                     return cl;
@@ -518,6 +522,7 @@ int fat_erase_chain(fat_fs_t *fs, uint32_t cluster) {
 
         cluster = next;
         ++fs->sb.free_clusters;
+	fs->flags |= FAT_FS_FLAG_SB_DIRTY;
     }
 
     return 0;

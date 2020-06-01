@@ -68,7 +68,7 @@ static int fat_write_raw_fsinfo(fat_fs_t *fs, fat32_fsinfo_t *fsinfo, int s) {
 
 int fat_write_fsinfo(fat_fs_t *fs) {
     fat32_fsinfo_t fsinfo;
-    int err;
+    int err = 0;
 
     /* Don't let us write to the volume if we're on a read-only FS. */
     if(!(fs->mnt_flags & FAT_MNT_FLAG_RW))
@@ -78,23 +78,27 @@ int fat_write_fsinfo(fat_fs_t *fs) {
     if(fs->sb.fs_type != FAT_FS_FAT32)
         return 0;
 
-    /* Read the old value in... */
-    if((err = fat_read_fsinfo(&fsinfo, fs->sb.fsinfo_sector, fs->dev)))
-        return err;
+    if (fs->flags & FAT_FS_FLAG_SB_DIRTY) {
+	    /* Read the old value in... */
+	    if((err = fat_read_fsinfo(&fsinfo, fs->sb.fsinfo_sector, fs->dev)))
+		return err;
 
-    fsinfo.fsinfo_sig1 = FAT32_FSINFO_SIG1;
-    fsinfo.fsinfo_sig2 = FAT32_FSINFO_SIG2;
-    fsinfo.free_clusters = fs->sb.free_clusters;
-    fsinfo.last_alloc_cluster = fs->sb.last_alloc_cluster;
-    fsinfo.fsinfo_sig3 = FAT32_FSINFO_SIG3;
+	    fsinfo.fsinfo_sig1 = FAT32_FSINFO_SIG1;
+	    fsinfo.fsinfo_sig2 = FAT32_FSINFO_SIG2;
+	    fsinfo.free_clusters = fs->sb.free_clusters;
+	    fsinfo.last_alloc_cluster = fs->sb.last_alloc_cluster;
+	    fsinfo.fsinfo_sig3 = FAT32_FSINFO_SIG3;
 
-    /* Write the first copy of the fsinfo sector... */
-    if((err = fat_write_raw_fsinfo(fs, &fsinfo, fs->sb.fsinfo_sector)))
-        return err;
+	    /* Write the first copy of the fsinfo sector... */
+	    if((err = fat_write_raw_fsinfo(fs, &fsinfo, fs->sb.fsinfo_sector)))
+		return err;
 
-    /* Write the backup copy if one exists. */
-    if(fs->sb.backup_bpb)
-        err = fat_write_raw_fsinfo(fs, &fsinfo, fs->sb.backup_bpb + 1);
+	    /* Write the backup copy if one exists. */
+	    if(fs->sb.backup_bpb)
+		err = fat_write_raw_fsinfo(fs, &fsinfo, fs->sb.backup_bpb + 1);
+
+	    fs->flags &= ~FAT_FS_FLAG_SB_DIRTY;
+    }
 
     return err;
 }

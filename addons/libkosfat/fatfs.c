@@ -278,6 +278,7 @@ fat_fs_t *fat_fs_init_ex(kos_blockdev_t *bd, uint32_t flags, int cache_sz,
 
     rv->dev = bd;
     rv->mnt_flags = flags & FAT_MNT_VALID_FLAGS_MASK;
+    rv->flags = 0;
 
     if(rv->mnt_flags != flags) {
         dbglog(DBG_WARNING, "fat_fs_init: unknown mount flags: %08" PRIx32
