@@ -448,10 +448,16 @@ int cdrom_init() {
 
     /* Reactivate drive: send the BIOS size and then read each
        word across the bus so the controller can verify it. */
-    *react = 0x1fffff;
-
-    for(p = 0; p < 0x200000 / sizeof(bios[0]); p++) {
-        (void)bios[p];
+    if((*(uint16 *)0xa0000000) == 0xe6ff) {
+        *react = 0x3ff;
+        for(p = 0; p < 0x400 / sizeof(bios[0]); p++) {
+            (void)bios[p];
+        }
+    } else {
+        *react = 0x1fffff;
+        for(p = 0; p < 0x200000 / sizeof(bios[0]); p++) {
+            (void)bios[p];
+        }
     }
 
     mutex_lock(&_g1_ata_mutex);
