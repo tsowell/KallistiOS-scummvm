@@ -594,7 +594,6 @@ int fat_find_dentry(fat_fs_t *fs, const char *fn, fat_dentry_t *rv,
         }
 
         tok = strtok_r(NULL, "/", &tmp);
-        cl = cur.cluster_low | (cur.cluster_high << 16);
     }
 
     /* One last check... If the filename the user passed in ends with a '/'
