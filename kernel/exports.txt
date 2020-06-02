@@ -55,6 +55,7 @@ abs
 strtok_r
 mktime
 towlower
+localtime
 # __error
 
 ######################################
