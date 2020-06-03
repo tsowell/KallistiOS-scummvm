@@ -60,7 +60,7 @@ static int create_empty_file(fs_ext2_fs_t *fs, const char *fn,
     ext2_inode_t *inode, *ninode;
     uint32_t inode_num, ninode_num;
     char *cp, *nd;
-    time_t now = time(NULL);
+    int64_t now = time(NULL);
 
     if(!(fs->mount_flags & FS_EXT2_MOUNT_READWRITE))
         return -EROFS;
@@ -1484,7 +1484,7 @@ static int fs_ext2_symlink(vfs_handler_t *vfs, const char *path1,
     int rv;
     char *nd, *cp;
     size_t len;
-    time_t now;
+    int64_t now;
     uint8_t *block;
 
     /* Make sure that the fs is mounted read/write. */
