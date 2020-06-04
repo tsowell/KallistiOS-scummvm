@@ -25,10 +25,10 @@
 #include <dc/g2bus.h>
 
 /* The boot time; we'll save this in rtc_init() */
-static time_t boot_time = 0;
+static int64_t boot_time = 0;
 
 /* Returns the date/time value as a UNIX epoch time stamp */
-time_t rtc_unix_secs() {
+int64_t rtc_unix_secs() {
     uint32 rtcold, rtcnew;
     int i;
 
@@ -61,7 +61,7 @@ time_t rtc_unix_secs() {
 /* Returns the date/time that the system was booted as a UNIX epoch time
    stamp. Adding this to the value from timer_ms_gettime() will
    produce a current timestamp. */
-time_t rtc_boot_time() {
+int64_t rtc_boot_time() {
     return boot_time;
 }
 

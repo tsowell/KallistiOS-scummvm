@@ -142,7 +142,7 @@ void mInternUpdateClockCounter(char *counter, int32 toAdd) {
 /* Used by modemConnectedUpdate. Returns a non-zero value when
    modemDisconnected should be called. */
 int modemConnectedEQMUpdate(void) {
-    time_t        curClock;
+    int64_t curClock;
     unsigned char flag = 0; /* Set if the MDP reported a high EQM value */
 
     if(modemRead(REGLOC(0xB)) & 0x1) { /* Check EQMAT */
@@ -273,7 +273,7 @@ int modemConnectedEQMUpdate(void) {
 /* A handler for when a connection has been established */
 void modemConnectedUpdate(void) {
     unsigned char data;
-    time_t        curClock;
+    int64_t curClock;
 
     /* Check ABCODE for errors */
     data = modemRead(REGLOC(0x14));

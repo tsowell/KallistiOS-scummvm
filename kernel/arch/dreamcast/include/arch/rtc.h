@@ -31,7 +31,7 @@ __BEGIN_DECLS
 
     \return                 The current UNIX-style timestamp (local time).
 */
-time_t rtc_unix_secs();
+int64_t rtc_unix_secs();
 
 /** \brief  Get the time that the sytem was booted.
 
@@ -40,7 +40,7 @@ time_t rtc_unix_secs();
 
     \return                 The boot time as a UNIX-style timestamp.
 */
-time_t rtc_boot_time();
+int64_t rtc_boot_time();
 
 /* \cond */
 /* Init / Shutdown */
