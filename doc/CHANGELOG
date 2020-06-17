@@ -104,6 +104,13 @@ KallistiOS version 2.1.0 -----------------------------------------------
 - NAO Added preliminary support for compiling to target the NAOMI and NAOMI 2
       arcade systems with a NetDIMM board attached [LS]
 - NAO Added a simple utility to parse NetDIMM binary header data [LS]
+- DC  Fixed AICA crash when volume is set to 255 [AB == Andress Barajas]
+- DC  Placed a cap on the amount of samples requested by AICA so we don't get a
+      Buffer overflow [AB]
+- DC  Added a very simple minifont and an example of its use [LS]
+- NAO Added a NAOMI-specific version of fb_console using minifont [LS]
+- NAO Cleaned up the build process to not build certain parts of the DC hardware
+      support that are either not useful or not (yet?) functional on NAOMI [LS]
 
 KallistiOS version 2.0.0 -----------------------------------------------
 - DC  Broadband Adapter driver fixes [Dan Potter == DP]

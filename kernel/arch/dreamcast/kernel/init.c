@@ -38,15 +38,24 @@ void __verify_newlib_patch();
 int main(int argc, char **argv);
 uint32 _fs_dclsocket_get_ip(void);
 
+#ifdef _arch_sub_naomi
+#define SAR2    ((vuint32 *)0xFFA00020)
+#define CHCR2   ((vuint32 *)0xFFA0002C)
+#define DMAOR   ((vuint32 *)0xFFA00040)
+#endif
+
 /* We have to put this here so we can include plat-specific devices */
 dbgio_handler_t * dbgio_handlers[] = {
 #ifndef _arch_sub_naomi
     &dbgio_dcload,
     &dbgio_dcls,
     &dbgio_scif,
-#endif
     &dbgio_null,
     &dbgio_fb
+#else
+    &dbgio_null,
+    &dbgio_fb
+#endif
 };
 int dbgio_handler_cnt = sizeof(dbgio_handlers) / sizeof(dbgio_handler_t *);
 
@@ -197,6 +206,14 @@ int arch_main() {
     uint8 *bss_start = (uint8 *)(&_bss_start);
     uint8 *bss_end = (uint8 *)(&end);
     int rv;
+
+#ifdef _arch_sub_naomi
+    /* Ugh. I'm really not sure why we have to set up these DMA registers this
+       way on boot, but failing to do so breaks maple... */
+    *SAR2 = 0;
+    *CHCR2 = 0x1201;
+    *DMAOR = 0x8201;
+#endif /* _arch_sub_naomi */
 
     /* Ensure that we pull in crtend.c in the linking process */
 #if __GNUC__ < 4

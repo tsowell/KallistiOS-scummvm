@@ -8,7 +8,9 @@
 OBJS = hardware.o
 
 # BIOS services
-OBJS += biosfont.o cdrom.o flashrom.o
+ifneq ($(KOS_SUBARCH), naomi)
+	OBJS += biosfont.o cdrom.o flashrom.o
+endif
 
 # Sound
 OBJS += spu.o spudma.o
@@ -26,11 +28,14 @@ OBJS += sq.o scif.o
 OBJS += scif-spi.o sd.o
 
 # G1 Bus ATA support
-OBJS += g1ata.o
+ifneq ($(KOS_SUBARCH), naomi)
+	OBJS += g1ata.o
+endif
 
-SUBDIRS = pvr network maple modem
+SUBDIRS = pvr maple
+
+ifneq ($(KOS_SUBARCH), naomi)
+	SUBDIRS += network modem
+endif
 
 include $(KOS_BASE)/Makefile.prefab
-
-
-

@@ -9,6 +9,9 @@
 #ifndef _SYS__TYPES_H
 #define _SYS__TYPES_H
 
+#include <kos/cdefs.h>
+__BEGIN_DECLS
+
 #include <sys/lock.h>
 
 // This part copied from newlib's sys/_types.h.
@@ -200,5 +203,13 @@ typedef _CLOCK_T_   __clock_t;
 #define __RESTRICT
 #endif
 #endif /* !__RESTRICT */
+
+#if __GNUC_MINOR__ > 95 || __GNUC__ >= 3
+typedef __builtin_va_list   __va_list;
+#else
+typedef char *          __va_list;
+#endif
+
+__END_DECLS
 
 #endif  /* _SYS__TYPES_H */

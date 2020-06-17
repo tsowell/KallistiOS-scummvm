@@ -36,8 +36,7 @@
    primary device would be the GD-ROM drive itself, so we're only actually
    concerned with the secondary device (use the normal cdrom_* functions to
    access the GD-ROM drive -- there's not a particularly compelling reason to
-   support its odd packet interface here). Also, at the moment, only PIO
-   transfers are supported. I'll look into DMA at some point in the future.
+   support its odd packet interface here).
 
    There are a few potentially useful outward facing functions here, but most of
    the time all you'll need here is the function to get a block device for a

@@ -88,7 +88,13 @@ __BEGIN_DECLS
 #define MAPLE_STATE_DMA         1               /**< \brief DMA in-progress */
 #define MAPLE_SPEED_2MBPS       0               /**< \brief 2Mbps bus speed */
 #define MAPLE_SPEED_TIMEOUT(n)  ((n) << 16)     /**< \brief Bus timeout macro */
+
+#ifndef _arch_sub_naomi
 #define MAPLE_RESET1_MAGIC      0x6155404f      /**< \brief First reset value */
+#else
+#define MAPLE_RESET1_MAGIC      0x6155405f
+#endif
+
 /** @} */
 
 /** \defgroup maple_cmds            Maple commands and responses

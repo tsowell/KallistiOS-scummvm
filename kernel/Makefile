@@ -19,7 +19,7 @@ all: subdirs $(STUBS)
 stubs/kernel_export_stubs.c: exports.txt
 	$(KOS_BASE)/utils/genexports/genexportstubs.sh $< stubs/kernel_export_stubs.c
 
-stubs/arch_export_stubs.c: arch/$(KOS_ARCH)/exports.txt
+stubs/arch_export_stubs.c: arch/$(KOS_ARCH)/exports-$(KOS_SUBARCH).txt
 	$(KOS_BASE)/utils/genexports/genexportstubs.sh $< stubs/arch_export_stubs.c
 
 include $(KOS_BASE)/Makefile.prefab
@@ -30,5 +30,3 @@ clean: clean_subdirs
 	rm -f stubs/*.o stubs/kernel_export_stubs.c stubs/arch_export_stubs.c
 
 run:
-
-

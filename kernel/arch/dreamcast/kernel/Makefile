@@ -40,8 +40,8 @@ authors.h: make_authors.awk
 
 arch_exports.o: arch_exports.c
 
-arch_exports.c: ../exports.txt
-	$(KOS_BASE)/utils/genexports/genexports.sh ../exports.txt arch_exports.c arch_symtab
+arch_exports.c: ../exports-$(KOS_SUBARCH).txt
+	$(KOS_BASE)/utils/genexports/genexports.sh ../exports-$(KOS_SUBARCH).txt arch_exports.c arch_symtab
 
 clean:
 	-rm -f banner.h authors.h

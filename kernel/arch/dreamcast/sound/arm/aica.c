@@ -96,7 +96,6 @@ void aica_play(int ch, int delay) {
 
     uint32 freq_lo, freq_base = 5644800;
     int freq_hi = 7;
-    uint32 i;
     uint32 playCont;
 
     /* Stop the channel (if it's already playing) */
@@ -124,14 +123,13 @@ void aica_play(int ch, int delay) {
     /* Write resulting values */
     CHNREG32(ch, 24) = (freq_hi << 11) | (freq_lo & 1023);
 
-    /* Set volume, pan */
+    /* Convert the incoming pan into a hardware value and set it */
     CHNREG8(ch, 36) = calc_aica_pan(pan);
     CHNREG8(ch, 37) = 0xf;
     /* turn off Low Pass Filter (LPF) */
     CHNREG8(ch, 40) = 0x24;
-    /* Convert the incoming volume and pan into hardware values */
-    /* Vol starts at zero so we can ramp */
-    CHNREG8(ch, 41) = 0xff;
+    /* Convert the incoming volume into a hardware value and set it */
+    CHNREG8(ch, 41) = calc_aica_vol(vol);
 
     /* If we supported volume envelopes (which we don't yet) then
        this value would set that up. The top 4 bits determine the
@@ -149,21 +147,15 @@ void aica_play(int ch, int delay) {
        also set the bits to start playback here. */
     CHNREG32(ch, 4) = smpptr & 0xffff;
     playCont = (mode << 7) | (smpptr >> 16);
-    vol = calc_aica_vol(vol);
 
     if(loopflag)
         playCont |= 0x0200;
 
     if(delay) {
         CHNREG32(ch, 0) = playCont;         /* key off */
-        CHNREG8(ch, 41) = vol;
     }
     else {
         CHNREG32(ch, 0) = 0xc000 | playCont;    /* key on */
-
-        /* ramp up the volume */
-        for(i = 0xff; i >= vol; i--)
-            CHNREG8(ch, 41) = i;
     }
 }
 

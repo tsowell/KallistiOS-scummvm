@@ -1,12 +1,16 @@
 # KallistiOS ##version##
 #
 # arch/dreamcast/util/Makefile
-# (c)2001 Dan Potter
+# Copyright (C) 2001 Dan Potter
 #
 
-OBJS = vmu_pkg.o screenshot.o fb_console.o
-SUBDIRS = 
+OBJS = vmu_pkg.o screenshot.o minifont.o
+SUBDIRS =
+
+ifneq ($(KOS_SUBARCH), naomi)
+	OBJS += fb_console.o
+else
+	OBJS += fb_console_naomi.o
+endif
 
 include $(KOS_BASE)/Makefile.prefab
-
-
