@@ -755,6 +755,4 @@ void vid_init(int disp_mode, int pixel_mode) {
 
 /*-----------------------------------------------------------------------------*/
 void vid_shutdown() {
-    /* Play nice with loaders, like KOS used to do. */
-    vid_init(DM_640x480, PM_RGB565);
 }

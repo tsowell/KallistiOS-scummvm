@@ -139,7 +139,6 @@ int  __attribute__((weak)) arch_auto_init() {
     /* Now comes the optional stuff */
     if(__kos_init_flags & INIT_IRQ) {
         irq_enable();       /* Turn on IRQs */
-        maple_wait_scan();  /* Wait for the maple scan to complete */
     }
 
 #ifndef _arch_sub_naomi

@@ -53,9 +53,6 @@ int hardware_periph_init() {
     /* Setup maple bus */
     maple_init();
 
-    /* Init video */
-    vid_init(DEFAULT_VID_MODE, DEFAULT_PIXEL_MODE);
-
 #ifndef _arch_sub_naomi
     /* Setup network (this won't do anything unless we enable netcore) */
     bba_init();
