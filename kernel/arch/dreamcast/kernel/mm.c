@@ -19,6 +19,8 @@
 #include <arch/irq.h>
 #include <stdio.h>
 
+#define MCR (*((volatile uint32_t *) 0xff800014))
+
 /* The end of the program is always marked by the '_end' symbol. So we'll
    longword-align that and add a little for safety. sbrk() calls will
    move up from there. */
@@ -34,6 +36,21 @@ int mm_init() {
     return 0;
 }
 
+/* Return address at top of system RAM */
+uint32 mm_top() {
+	if (((MCR >> 3) & 0x07) == 3) {
+		/* AMX 3, assuming 32MB SDRAM */
+		return 0x8e000000;
+	}
+	else {
+#ifndef _arch_sub_naomi
+		return 0x8d000000;
+#else
+		return 0x8e000000;
+#endif
+	}
+}
+
 /* Simple sbrk function */
 void* mm_sbrk(unsigned long increment) {
     int old;
@@ -46,7 +63,7 @@ void* mm_sbrk(unsigned long increment) {
 
     sbrk_base = (void *)(increment + (unsigned long)sbrk_base);
 
-    if(((uint32)sbrk_base) >= (0x8d000000 - 65536)) {
+    if(((uint32)sbrk_base) >= (mm_top() - 65536)) {
         dbglog(DBG_DEAD, "Requested sbrk_base %p, was %p, diff %lu\n",
                sbrk_base, base, increment);
         arch_panic("out of memory; about to run over kernel stack");

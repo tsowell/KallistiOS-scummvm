@@ -136,6 +136,14 @@ void __crtend_pullin();
 */
 int mm_init();
 
+/** \brief  Determine how much addressable memory is present.  On Dreamcast
+	    this checks the MCR to determine which addressing is being used.
+	    Only supports pristine 16MB SDRAM and 32MB SDRAM as described at
+	    https://tsowell.github.io/2020/06/21/dreamcast-32mb-ram-upgrade.html
+    \return The address that forms the upper bound of system RAM.
+*/
+uint32 mm_top();
+
 /** \brief  Request more core memory from the system.
     \param  increment       The number of bytes requested.
     \return                 A pointer to the memory.
@@ -354,17 +362,13 @@ const char *kos_get_authors(void);
 */
 #define arch_fptr_next(fptr) (*((uint32*)(fptr+4)))
 
-#ifndef _arch_sub_naomi
 /** \brief  Returns true if the passed address is likely to be valid. Doesn't
             have to be exact, just a sort of general idea.
 
     \return                 Whether the address is valid or not for normal
                             memory access.
 */
-#define arch_valid_address(ptr) ((ptr_t)(ptr) >= 0x8c010000 && (ptr_t)(ptr) < 0x8d000000)
-#else
-#define arch_valid_address(ptr) ((ptr_t)(ptr) >= 0x8c010000 && (ptr_t)(ptr) < 0x8e000000)
-#endif
+#define arch_valid_address(ptr) ((ptr_t)(ptr) >= 0x8c010000 && (ptr_t)(ptr) < mm_top())
 
 __END_DECLS
 
