@@ -57,7 +57,7 @@ static uint8 dec_to_bcd(int dec) {
 }
 
 void vmufs_dir_fill_time(vmu_dir_t *d) {
-    int64_t t;
+    time_t t;
     struct tm tm;
 
     /* Get the time */

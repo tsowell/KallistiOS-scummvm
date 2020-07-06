@@ -757,7 +757,7 @@ static uint64 fs_fat_total64(void *h) {
     return rv;
 }
 
-static int64_t fat_time_to_stat(uint16_t date, uint16_t time) {
+static time_t fat_time_to_stat(uint16_t date, uint16_t time) {
     struct tm tmv;
 
     /* The MS-DOS epoch is January 1, 1980, not January 1, 1970... */

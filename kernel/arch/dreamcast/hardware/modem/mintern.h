@@ -92,7 +92,7 @@ typedef struct {
     struct {
         unsigned char flags;    /* EQM_FLAG_* */
         unsigned char attempts; /* The number of consecutive retrain attempts */
-        int64_t       nextClock;
+        time_t        nextClock;
         char          counter;
         char          lastCounter;
         char          auxCounter;

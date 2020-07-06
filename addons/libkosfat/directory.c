@@ -1004,7 +1004,7 @@ static inline void fill_timestamp(struct tm *now, uint16_t *date,
 
 inline void fat_add_raw_dentry(fat_dentry_t *dent, const char shortname[11],
                                uint8_t attr, uint32_t cluster) {
-    int64_t now = time(NULL);
+    time_t now = time(NULL);
     struct tm *tmv;
 
     memset(dent, 0, sizeof(fat_dentry_t));
@@ -1353,7 +1353,7 @@ int fat_get_dentry(fat_fs_t *fs, uint32_t cluster, uint32_t off,
 }
 
 void fat_update_mtime(fat_dentry_t *ent) {
-    int64_t now = time(NULL);
+    time_t now = time(NULL);
     struct tm *tmv;
 
     tmv = localtime(&now);
