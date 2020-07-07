@@ -108,7 +108,7 @@ typedef unsigned long __id_t;
 #endif
 
 #ifndef __ino_t_defined
-typedef unsigned long __ino_t;
+typedef unsigned short __ino_t;
 #endif
 
 #ifndef __pid_t_defined
@@ -127,7 +127,7 @@ typedef unsigned short __nlink_t;
 typedef long        __suseconds_t;  /* microseconds (signed) */
 typedef unsigned long   __useconds_t;   /* microseconds (unsigned) */
 
-#define _TIME_T_ long
+#define _TIME_T_ long long
 typedef _TIME_T_    __time_t;
 
 #ifndef __clockid_t_defined
