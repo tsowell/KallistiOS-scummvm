@@ -53,6 +53,13 @@ int hardware_periph_init() {
     /* Setup maple bus */
     maple_init();
 
+    /* The maple blank handler won't get called until we init video.  Polling
+    it here will allow device enumeration before video is initialized. */
+    while(maple_state.detect_wrapped < 1) {
+	    maple_vbl_irq_hnd(0);
+	    thd_sleep(17);
+    }
+
 #ifndef _arch_sub_naomi
     /* Setup network (this won't do anything unless we enable netcore) */
     bba_init();
